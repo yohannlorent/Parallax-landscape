@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Document sans nom</title>
+</head>
+
+<body>
+	
+	<div class="conteneur">
+		<img src="img/01.jpg"/>	
+		
+	
+	</div>
+	
+	
+	<style>
+		body{
+			margin:0;
+			padding:0;
+		}
+		.conteneur{
+			background-color:#0f0;
+			width:100vw;
+			height:100vh;
+			position:relative;
+			overflow:hidden;
+		}
+		
+		.conteneur img{
+			width:100%;
+			height:auto;
+		}
+	
+	</style>
+	
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link href="https://code.jquery.com/ui/1.11.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
+		
+<script type="text/javascript">// <![CDATA[
+	
+	jQuery(document).ready(function($) {
+		
+		$( window ).resize(function() {
+			if($(".conteneur").height()<$(".conteneur").width()){
+			   $(".conteneur img").css('width' , '100%');
+				 $(".conteneur img").css('height' , 'auto');
+				if($(".conteneur img").height()<$(".conteneur").height()){
+					$(".conteneur img").css('height' , '100%');
+				   $(".conteneur img").css('width' , 'auto');
+				}
+			  }else{
+				  
+				 $(".conteneur img").css('height' , '100%');
+				   $(".conteneur img").css('width' , 'auto');
+			  }
+		  
+			});
+		
+		
+		});
+		 
+	// ]]></script>	
+</body>
+</html>
