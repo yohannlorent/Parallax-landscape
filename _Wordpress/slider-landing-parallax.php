@@ -72,7 +72,8 @@ get_header();
  		//INIT-- on initialise le sens d'aniamtion des slide
  		window.sensSlide=1;
 
-
+ 		//INIT -- On crée une variable conteneur pour le timer de changement de slide
+ 		var p=0;
 
  		//INIT -- on crée les tableaux
  		window.bg=["01-bg-01.jpg","02-bg-01.jpg","03-bg-01.jpg"];
@@ -97,6 +98,13 @@ get_header();
             creaSlide();
             //on incrémente var init pour dire qu'on est plus sur al première slide on qu'on peut donc faire des animations
             varInit++;
+
+             // on supprime le timer
+            clearInterval(timer);
+            //on supprime la progression de la progress bar
+            clearInterval(progressionProgresseBar);
+            //on supprime la progress bar
+            $('.fondTimer').remove();
             
          //INIT - Fin d'action bouton suivant
          });
@@ -113,13 +121,88 @@ get_header();
             sensSlide=0;
             //on appelle la fonction qui ajoute une nouvelle slide
             creaSlide();
+
+            // on supprime le timer
+            clearInterval(timer);
+            //on supprime la progression de la progress bar
+            clearInterval(progressionProgresseBar);
+            //on supprime la progress bar
+            $('.fondTimer').remove();
+
+            
          
          //INIT - Fin d'action bouton suivant 
          });
 
+         // INIT - on change de slide toute les 5 secondes
+         var timer =setInterval(function(){ 
 
-	  
+         //on décrémente le z-index
+            zindex--;
+            //on incrémentde l'index / si on est à al fin du tableau on revient au début
+            i++;
+            if (i==bg.length){
+               i=0;
+            }
+            //on indique el sens d'animation
+            sensSlide=1;
+            //on appelle la fonction qui ajoute une nouvelle slide
+            creaSlide();
+            //on incrémente var init pour dire qu'on est plus sur al première slide on qu'on peut donc faire des animations
+            varInit++;
 
+            //On initialise la variable servant à calculer le pourcentage de progression de la progress bar
+            p=0;
+
+         }, 5000);
+
+         //on crée un conteneur pour al progressbar auquel on pourra mettre la taille et la positionq ue l'on veut
+        $('body').append("<div class='fondTimer'></div>");
+	  	$('.fondTimer').css('position','absolute');
+	  	$('.fondTimer').css('z-index','950');
+	  	$('.fondTimer').css('bottom','20px');
+	  	$('.fondTimer').css('left','20px');
+	  	$('.fondTimer').css('width','30%');
+	  	$('.fondTimer').css('height','5px');
+
+	  	//on crée un conteneur à l'interieur ayant une position relative, qui permettra de mettr eles progress bar en absolute
+	  	 $('.fondTimer').append("<div class='contentProgressBar'></div>");
+	  	 $('.contentProgressBar').css('position','relative');
+	  	$('.contentProgressBar').css('width','100%');
+	  	$('.contentProgressBar').css('height','100%');
+
+	  	//Un crée la progress bar de fond
+	  	$('.contentProgressBar').append("<div class='bgProgessbar'></div>");
+	  	$('.bgProgessbar').css('position','absolute');
+	  	$('.bgProgessbar').css('z-index','2');
+	  	$('.bgProgessbar').css('top','0');
+	  	$('.bgProgessbar').css('left','0');
+	  	$('.bgProgessbar').css('width','100%');
+	  	$('.bgProgessbar').css('height','100%');
+	  	$('.bgProgessbar').css('background-color','#fff');
+	  	$('.bgProgessbar').css('opacity', '0.6');
+
+	  	//On crée la progress bar
+	  	$('.contentProgressBar').append("<div class='progessbar'></div>");
+	  	$('.progessbar').css('position','absolute');
+	  	$('.progessbar').css('z-index','3');
+	  	$('.progessbar').css('top','0');
+	  	$('.progessbar').css('left','0');
+	  	$('.progessbar').css('width','0%');
+	  	$('.progessbar').css('height','100%');
+	  	$('.progessbar').css('background-color','#fff');
+
+	  	
+
+	  	var progressionProgresseBar =setInterval(function(){ 
+
+	  		//on incrémente la variable permettant de calculer le pourcentage de progression
+        	p=p+50;
+        	//on calcule le pourcentage de prograssion
+            var pourcentage=(p*100)/5000;
+            //on applique le pourcentage à la progress bar
+            $('.progessbar').css('width',pourcentage+'%');
+         }, 50);
             
    });
 
@@ -129,13 +212,13 @@ get_header();
 	   preloadPictures(['<?php echo get_stylesheet_directory_uri(); ?>/img/'+bg[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+middle[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+front[i]], function(){
 	   	
 	   		//si c'est chargé, on appelle la fonction qui va créer la slide
-           init_ladscape();
+           init_landscape();
 
 		});
    	}
 	
 	
-	function init_ladscape(){
+	function init_landscape(){
 		
 		//on crée la slide
 		 $('.slider-parallax').append("<div class='slide-parallax"+zindex+"'></div>");
