@@ -13,7 +13,7 @@ get_header();
    <link href="https://code.jquery.com/ui/1.11.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet" />
 
 <div class="slider-parallax">
-	<div class="slide-parallax800"></div>	
+	
 </div>
 
 <img src="<?php echo get_stylesheet_directory_uri(); ?>/img/right-arrow.svg" id="right-arrow"/>
@@ -59,20 +59,110 @@ get_header();
 <script>
 
    $( window ).on( "load", function() {
-	
-	   //INIT -- on crée un variable z-index à décrementer
+
+   		//INIT -- on crée un variable z-index à décrementer
         window.zindex=800; 
-	   //INIT -- on ajoute un style au slide de la valeur d'index
-	   $('.slide-parallax'+zindex).css('position','relative');
-	   $('.slide-parallax'+zindex).css('top','0');
-	   $('.slide-parallax'+zindex).css('left','0');
-	   $('.slide-parallax'+zindex).css('width','100%');
-	   $('.slide-parallax'+zindex).css('height','100%');
-	   $('.slide-parallax'+zindex).css('overflow','hidden');
+
+        //INIT -- on crée une variable d'identation de tableau
+ 		window.i=0; 
+
+ 		//INIT-- création de variable d'initialisation pour la première fois où on arrive sur le site
+ 		window.varInit=0;
+
+ 		//INIT-- on initialise le sens d'aniamtion des slide
+ 		window.sensSlide=1;
+
+
+
+ 		//INIT -- on crée les tableaux
+ 		window.bg=["01-bg-01.jpg","02-bg-01.jpg","03-bg-01.jpg"];
+ 		window.middle=["01-bg-02.png","02-bg-02.png","03-bg-02.png"];
+ 		window.front=["01-bg-03.png","02-bg-03.png","03-bg-03.png"];
+
+ 		//On appelle la fonction de création de slide
+ 		creaSlide();
+
+ 		  //INIT -- lorsqu'on clique sur le bouton suivant
+         $( "#right-arrow" ).click(function() {
+            //on décrémente le z-index
+            zindex--;
+            //on incrémentde l'index / si on est à al fin du tableau on revient au début
+            i++;
+            if (i==bg.length){
+               i=0;
+            }
+            //on indique el sens d'animation
+            sensSlide=1;
+            //on appelle la fonction qui ajoute une nouvelle slide
+            creaSlide();
+            //on incrémente var init pour dire qu'on est plus sur al première slide on qu'on peut donc faire des animations
+            varInit++;
+            
+         //INIT - Fin d'action bouton suivant
+         });
+         //INIT -- lorsqu'on clique sur le bouton precedent
+         $( "#left-arrow" ).click(function() {
+            //on décrémente le z-index
+            zindex--;
+            //on incrémentde l'index / si on est à al fin du tableau on revient au début
+            i--;
+            if (i<0){
+               i=bg.length-1;
+            }
+             //on indique el sens d'animation
+            sensSlide=0;
+            //on appelle la fonction qui ajoute une nouvelle slide
+            creaSlide();
+         
+         //INIT - Fin d'action bouton suivant 
+         });
+
+
+	  
+
+            
+   });
+
+   	function creaSlide(){
+
+   		 //INIT- on applique un preload aux images servant à créer la slide
+	   preloadPictures(['<?php echo get_stylesheet_directory_uri(); ?>/img/'+bg[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+middle[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+front[i]], function(){
+	   	
+	   		//si c'est chargé, on appelle la fonction qui va créer la slide
+           init_ladscape();
+
+		});
+   	}
+	
+	
+	function init_ladscape(){
+		
+		//on crée la slide
+		 $('.slider-parallax').append("<div class='slide-parallax"+zindex+"'></div>");
+
+		//INIT -- on ajoute un style au slide de la valeur d'index
+		 $('.slide-parallax'+zindex).css('position','absolute');
+		 $('.slide-parallax'+zindex).css('z-index',zindex);
+		 $('.slide-parallax'+zindex).css('top','0');
+		 //si c'est la première slide qui apparait on la met avec une amrge à 0, pour qu'elle apparaisse à l'écran tout de suite
+		 if(varInit==0){
+		 	$('.slide-parallax'+zindex).css('left','0');
+		 	
+		 }else{
+		 	//sinon on la place à la droite de l'ecran prête à être animée pour arriver
+		 	$('.slide-parallax'+zindex).css('left',$(window).width());
+		 }
+		 $('.slide-parallax'+zindex).css('width','100%');
+		 $('.slide-parallax'+zindex).css('height','100%');
+		 $('.slide-parallax'+zindex).css('overflow','hidden');
 	   //INIT -- on y insère les div d'images (elle même dans des div pour le redimensionnement wordpress)
-	   $('.slide-parallax'+zindex).append("<div class='01-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/01-bg-01.jpg'/></div>");
-	   $('.slide-parallax'+zindex).append("<div class='02-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/01-bg-02.png'/></div>");
-	   $('.slide-parallax'+zindex).append("<div class='03-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/01-bg-03.png'/></div>");
+	    $('.slide-parallax'+zindex).append("<div class='conteneurSlides'></div>");
+	     $('.slide-parallax'+zindex).children('.conteneurSlides').css('position','relative');
+		 $('.slide-parallax'+zindex).children('.conteneurSlides').css('width','100%');
+		 $('.slide-parallax'+zindex).children('.conteneurSlides').css('height','100%');
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='01-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+bg[i]+"'/></div>");
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='02-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+middle[i]+"'/></div>");
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='03-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+front[i]+"'/></div>");
 	   //INIT -- on recupère la taille originelle de l'image pour l'utiliser comme valeur de base lors du redimensionnement
 	   window.tailleWimg01= $('.01-slideInterne'+zindex+' img').width();
 	   window.tailleHimg01= $('.01-slideInterne'+zindex+' img').height();
@@ -94,7 +184,8 @@ get_header();
 	   $( '.02-slideInterne'+zindex+' img' ).css('height','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('width','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('height','100%');
-	   //INIT -- on applique la fonction de redimentionnement pour chaque slide
+
+		//INIT -- on applique la fonction de redimentionnement pour chaque slide
 	    miseEnPlace();
       	
 	   //on applique l'effet au rollover de la souris 
@@ -127,11 +218,45 @@ get_header();
 	   $( window ).resize(function() {
             miseEnPlace();
          });
-            
-   });
-	
-	
-	
+
+	   //si varinit n'est plus égal à zero, on fait une animation
+ 		 if(varInit>0){
+ 		 	
+ 		 	//si on a  appuyé sur la flèche droite
+ 		 	if(sensSlide==1){
+ 		 		
+ 		 		//on fait sortir la slide actuelle de l'écran
+		       $('.slide-parallax'+(zindex+1)).animate({
+		         	left: -($(window).width())
+		        },"slow", function() { 
+		        	//une fois sortie de l'écran on la supprime
+		        	 $('.slide-parallax'+(zindex+1)).remove();
+
+		        });
+ 			//on fait apparaitre la slide nouvellement crée
+		      $('.slide-parallax'+(zindex)).animate({
+              		left: 0
+		       },"slow", function() {});
+			}else if(sensSlide==0){
+				$('.slide-parallax'+zindex).css('left',-($(window).width()));
+ 		 		
+ 		 		//on fait sortir la slide actuelle de l'écran
+		       $('.slide-parallax'+(zindex+1)).animate({
+		         	left:($(window).width())
+		        },"slow", function() { 
+		        	//une fois sortie de l'écran on la supprime
+		        	 $('.slide-parallax'+(zindex+1)).remove();
+
+		        });
+ 			//on fait apparaitre la slide nouvellement crée
+		      $('.slide-parallax'+(zindex)).animate({
+              		left: 0
+		       },"slow", function() {});
+			}
+	   		
+	   	 }
+
+	}
 	
 	
 	function miseEnPlace(){
@@ -204,6 +329,31 @@ get_header();
 
 
    }
+
+
+   //preload d'images
+   var preloadPictures = function(pictureUrls, callback) {
+    var i,
+        j,
+        loaded = 0;
+
+    for (i = 0, j = pictureUrls.length; i < j; i++) {
+        (function (img, src) {
+            img.onload = function () {                               
+                if (++loaded == pictureUrls.length && callback) {
+                    callback();
+                }
+            };
+
+            // Use the following callback methods to debug
+            // in case of an unexpected behavior.
+            img.onerror = function () {};
+            img.onabort = function () {};
+
+            img.src = src;
+        } (new Image(), pictureUrls[i]));
+    }
+};
 
 </script>
 
