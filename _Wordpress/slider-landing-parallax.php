@@ -19,6 +19,7 @@ get_header();
 
 
 <style type="text/css">
+	@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
   	body{
     	margin:0;
     	padding:0;
@@ -28,6 +29,48 @@ get_header();
 		height:100vh;
 		background-color:#000;
 		overflow:hidden;
+	}
+	.titre-parallax{
+		font-family: 'Open Sans', sans-serif;
+		font-weight:700;
+		text-align:center;
+		color:#fff;
+		font-size:120px;
+		line-height:120px;
+	}
+	.chapeau-parallax{
+		font-family: 'Open Sans', sans-serif;
+		font-weight:400;
+		text-align:center;
+		color:#fff;
+		font-size:22px;
+		line-height:26px;
+		margin-top:20px;
+	}
+	.bouton-parallax{
+		font-family: 'Open Sans', sans-serif;
+		font-weight:700;
+		text-align:center;
+		text-transform:uppercase;
+		color:#fff;
+		font-size:14px;
+		line-height:18px;
+		background-color:#d44d2e;
+		margin-top:20px;
+		display:inline-block;
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-left:25px;
+		padding-right:25px;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	a.bouton-parallax{
+		text-decoration:none;	
+	}
+	a.bouton-parallax:hover{
+		background-color:#fff;
+		color:#d44d2e;
 	}
 
 	
@@ -408,7 +451,8 @@ get_header();
 	///////////////////////////////////
 	function init_landscape(){
 		
-		$('.slider-parallax').append("<div class='text-parallax"+zindex+"'></div>");
+		
+		
 		
 		//on crée la slide
 		 $('.slider-parallax').append("<div class='slide-parallax"+zindex+"'></div>");
@@ -460,6 +504,42 @@ get_header();
 	   $( '.02-slideInterne'+zindex+' img' ).css('height','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('width','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('height','100%');
+		
+		
+		//On ajoute le contenu texte
+		$('.slider-parallax').append("<div class='text-parallax"+zindex+"'></div>");
+		$('.text-parallax'+zindex).css('position','absolute');
+		$('.text-parallax'+zindex).css('z-index',zindex+10);
+		$('.text-parallax'+zindex).css('top','50%');
+		$('.text-parallax'+zindex).css('left','50%');
+		$('.text-parallax'+zindex).css('width','40%');
+		$('.text-parallax'+zindex).css('text-align','center');
+		$('.text-parallax'+zindex).css('-webkit-transform','translate(-50%,-50%)');
+	    $('.text-parallax'+zindex).css('-ms-transform','translate(-50%,-50%)');
+	    $('.text-parallax'+zindex).css('transform','translate(-50%,-50%)');
+		
+		$('.text-parallax'+zindex).append("<div class='titre-parallax'>"+titre[i]+"</div>");
+		$('.text-parallax'+zindex).append("<div class='chapeau-parallax'>"+chapeau[i]+"</div>");
+		$('.text-parallax'+zindex).append("<a href='#' class='bouton-parallax'>"+bouton[i]+"</a>");
+		
+		
+		
+	/*	var filterVal = 'blur(10px)';
+		$('.text-parallax'+zindex)
+		  .css('filter',filterVal)
+		  .css('webkitFilter',filterVal)
+		  .css('mozFilter',filterVal)
+		  .css('oFilter',filterVal)
+		  .css('msFilter',filterVal);
+		
+		//on fait partir le texte
+			 $('.text-parallax'+zindex).animate({
+              		 "-webkit-filter": "blur(0px)",
+                "filter": "blur(0px)"
+					
+		       },"slow", function() { 
+			  });*/
+		  tweenBlur($('.text-parallax'+zindex), 15, 0);
 
 		//INIT -- on applique la fonction de redimentionnement pour chaque slide
 	    miseEnPlace();
@@ -531,6 +611,22 @@ get_header();
 		       },"slow", function() { 
 			  });
 			}
+			 
+			  tweenBlur($('.text-parallax'+(zindex+1)), 0, 15);
+			 $('.text-parallax'+(zindex+1)).animate({
+              		 opacity: 0 
+		       },"slow", function() { 
+				 $('.text-parallax'+(zindex+1)).remove();
+			  });
+			   tweenBlur($('.text-parallax'+zindex), 15, 0);
+			
+			 //on fait partir le texte
+			/* $('.text-parallax'+(zindex+1)).animate({
+              		 opacity: 0,
+					'transform':'translate3d(0,0,-120px) '
+		       },"slow", function() { 
+			  });
+			 */
 	   		
 	   	 }
 		
@@ -649,6 +745,33 @@ get_header();
         } (new Image(), pictureUrls[i]));
     }
 };
+	
+	
+	   // Generic function to set blur radius of $ele
+    var setBlur = function(ele, radius) {
+            $(ele).css({
+               "-webkit-filter": "blur("+radius+"px)",
+                "filter": "blur("+radius+"px)"
+           });
+       },
+       
+       // Generic function to tween blur radius
+       tweenBlur = function(ele, startRadius, endRadius) {
+            $({blurRadius: startRadius}).animate({blurRadius: endRadius}, {
+                duration: 500,
+                easing: 'swing', // or "linear"
+                                 // use jQuery UI or Easing plugin for more options
+                step: function() {
+                    setBlur(ele, this.blurRadius);
+                },
+                complete: function() {
+                    // Final callback to set the target blur radius
+                    // jQuery might not reach the end value
+                    setBlur(ele, endRadius);
+               }
+           });
+        };
+    
 
 </script>
 
