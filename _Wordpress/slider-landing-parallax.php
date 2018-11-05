@@ -507,7 +507,7 @@ get_header();
 		
 		
 		//On ajoute le contenu texte
-		$('.slider-parallax').append("<div class='text-parallax"+zindex+"'></div>");
+		 $('.slide-parallax'+zindex).append("<div class='text-parallax"+zindex+"'></div>");
 		$('.text-parallax'+zindex).css('position','absolute');
 		$('.text-parallax'+zindex).css('z-index',zindex+10);
 		$('.text-parallax'+zindex).css('top','50%');
@@ -523,23 +523,7 @@ get_header();
 		$('.text-parallax'+zindex).append("<a href='#' class='bouton-parallax'>"+bouton[i]+"</a>");
 		
 		
-		
-	/*	var filterVal = 'blur(10px)';
-		$('.text-parallax'+zindex)
-		  .css('filter',filterVal)
-		  .css('webkitFilter',filterVal)
-		  .css('mozFilter',filterVal)
-		  .css('oFilter',filterVal)
-		  .css('msFilter',filterVal);
-		
-		//on fait partir le texte
-			 $('.text-parallax'+zindex).animate({
-              		 "-webkit-filter": "blur(0px)",
-                "filter": "blur(0px)"
-					
-		       },"slow", function() { 
-			  });*/
-		  tweenBlur($('.text-parallax'+zindex), 15, 0);
+		tweenBlur($('.text-parallax'+zindex), 15, 0);
 
 		//INIT -- on applique la fonction de redimentionnement pour chaque slide
 	    miseEnPlace();
