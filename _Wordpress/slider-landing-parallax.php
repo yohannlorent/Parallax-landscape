@@ -507,7 +507,7 @@ get_header();
 		
 		
 		//On ajoute le contenu texte
-		 $('.slide-parallax'+zindex).append("<div class='text-parallax"+zindex+"'></div>");
+		$('.slider-parallax').append("<div class='text-parallax"+zindex+"'></div>");
 		$('.text-parallax'+zindex).css('position','absolute');
 		$('.text-parallax'+zindex).css('z-index',zindex+10);
 		$('.text-parallax'+zindex).css('top','50%');
@@ -533,7 +533,7 @@ get_header();
 	   var object1= $('.01-slideInterne'+zindex);
 	   var object2=$('.02-slideInterne'+zindex);
 	   var object3=$('.03-slideInterne'+zindex);
-	   var layer=$('.slide-parallax'+zindex);
+	   var layer=$(window);
 	   //On fait bouger le plan du milieu
 	    layer.mousemove(function(e){
 	        var valueX=(e.pageX * -1 / 20);  
