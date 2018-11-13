@@ -14,9 +14,38 @@ get_header();
 
 <div class="slider-parallax">
 	
+	<?php
+
+	// check if the repeater field has rows of data
+	if( have_rows('parallax_repeteur') ):
+
+		// loop through the rows of data
+		while ( have_rows('parallax_repeteur') ) : the_row();
+	?>
+	<div class='slide-parallax'>	
+		<div class="imageSlide01"><img src="<?php echo the_sub_field('image_de_fond'); ?>"></div>
+		<div class="imageSlide02"><img src="<?php echo the_sub_field('image_du_milieu'); ?>"></div>
+		<div class="imageSlide03"><img src="<?php echo the_sub_field('image_de_premier_plan'); ?>"></div>
+		<div class="titre"><?php echo the_sub_field('titre'); ?></div>
+		<div class="chapeau"><?php echo the_sub_field('texte_chapeau'); ?></div>
+		<div class="push"><?php echo the_sub_field('texte_push'); ?></div>
+				
+	</div>
+
+	<?php
+		endwhile;
+
+	else :
+
+		// no rows found
+
+	endif;
+
+	?>
+
+	
+	
 </div>
-
-
 
 <style type="text/css">
 	@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
@@ -96,12 +125,28 @@ get_header();
  		var p=0;
 
  		//INIT -- on crée les tableaux
- 		window.bg=["01-bg-01.jpg","02-bg-01.jpg","03-bg-01.jpg"];
- 		window.middle=["01-bg-02.png","02-bg-02.png","03-bg-02.png"];
- 		window.front=["01-bg-03.png","02-bg-03.png","03-bg-03.png"];
-	   	window.titre=["Mountains","Holidays","Asia"];
-	   	window.chapeau=["A mountain is a large landform that rises above the surrounding land in a limited area, usually in the form of a peak. A mountain is generally steeper than a hill. Mountains are formed through tectonic forces or volcanism.","A holiday is a day set aside by custom or by law on which normal activities, especially business or work including school, are suspended or reduced. ","Asia is Earth's largest and most populous continent, located primarily in the Eastern and Northern Hemispheres."];
-	   	window.bouton=["WATCH MORE","WATCH MORE","WATCH MORE"];
+	    //Création du tableau contenant les images du slider
+        window.bg=new Array();
+	    window.middle=new Array();
+	    window.front=new Array();
+	    window.titre=new Array();
+	    window.chapeau=new Array();
+	    window.bouton=new Array();
+	   
+	    //pour chaque div
+          $.each($(".slide-parallax") , function (l){ 
+            //on stocke la valeur de l'image dans le tableau
+             bg[l]=$(this).children( '.imageSlide01' ).children( 'img' ).attr('src');
+			 middle[l]=$(this).children( '.imageSlide02' ).children( 'img' ).attr('src');
+			 front[l]=$(this).children( '.imageSlide03' ).children( 'img' ).attr('src');
+			 titre[l]=$(this).children( '.titre' ).text();
+			 chapeau[l]=$(this).children( '.chapeau' ).text();
+			 bouton[l]=$(this).children( '.push' ).text();
+             //On supprime la div
+              $(this).remove();
+          });
+
+	   
 
  		//On appelle la fonction de création de slide
  		creaSlide();
@@ -324,6 +369,11 @@ get_header();
 			
 			//Auclick
 			$('.bullet'+iter).click(function() {
+				 clearInterval(timer);
+            //on supprime la progression de la progress bar
+            clearInterval(progressionProgresseBar);
+            //on supprime la progress bar
+            $('.fondTimer').remove();
 				
 				//on détermine le sens d'animation
 				if($(this).attr("id")<i){
@@ -344,13 +394,7 @@ get_header();
 					creaSlide();
 					//on incrémente var init pour dire qu'on est plus sur al première slide on qu'on peut donc faire des animations
 					varInit++;
-					// on supprime le timer
-					clearInterval(timer);
-					//on supprime la progression de la progress bar
-					clearInterval(progressionProgresseBar);
-					//On fait disparaitre la progressbar pour al faire reaparaitre lorsque l'animationd e changement de slide sera finie
-					p=0;
-					$('.fondTimer').css('display','none');
+					
 
 				}
 
@@ -437,7 +481,7 @@ get_header();
    	function creaSlide(){
 
    		 //INIT- on applique un preload aux images servant à créer la slide
-	   preloadPictures(['<?php echo get_stylesheet_directory_uri(); ?>/img/'+bg[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+middle[i], '<?php echo get_stylesheet_directory_uri(); ?>/img/'+front[i]], function(){
+	   preloadPictures([bg[i], middle[i], front[i]], function(){
 	   	
 	   		//si c'est chargé, on appelle la fonction qui va créer la slide
            init_landscape();
@@ -480,9 +524,9 @@ get_header();
 	     $('.slide-parallax'+zindex).children('.conteneurSlides').css('position','relative');
 		 $('.slide-parallax'+zindex).children('.conteneurSlides').css('width','100%');
 		 $('.slide-parallax'+zindex).children('.conteneurSlides').css('height','100%');
-	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='01-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+bg[i]+"'/></div>");
-	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='02-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+middle[i]+"'/></div>");
-	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='03-slideInterne"+zindex+"'><img src='<?php echo get_stylesheet_directory_uri(); ?>/img/"+front[i]+"'/></div>");
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='01-slideInterne"+zindex+"'><img src='"+bg[i]+"'/></div>");
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='02-slideInterne"+zindex+"'><img src='"+middle[i]+"'/></div>");
+	   $('.slide-parallax'+zindex).children('.conteneurSlides').append("<div class='03-slideInterne"+zindex+"'><img src='"+front[i]+"'/></div>");
 	   //INIT -- on recupère la taille originelle de l'image pour l'utiliser comme valeur de base lors du redimensionnement
 	   window.tailleWimg01= $('.01-slideInterne'+zindex+' img').width();
 	   window.tailleHimg01= $('.01-slideInterne'+zindex+' img').height();
