@@ -44,10 +44,11 @@
 		display:inline-block;
 		padding-top:10px;
 		padding-bottom:10px;
-		padding-left:25px;
-		padding-right:25px;
+		padding-left:60px;
+		padding-right:60px;
 		margin-left:auto;
 		margin-right:auto;
+		border-radius: 25px;
 	}
 
 	a.bouton-parallax{
@@ -55,6 +56,6 @@
 	}
 
 	a.bouton-parallax:hover{
-		background-color:#fff;
-		color:#d44d2e;
+		background-color:#fff !important;
+		color:#3b3b3b;
 	}

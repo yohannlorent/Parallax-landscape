@@ -25,6 +25,12 @@ function init_parallax(){
 	    window.titre=new Array();
 	    window.chapeau=new Array();
 	    window.bouton=new Array();
+	
+		window.couleurbouton=new Array();
+		window.couleurbullet=new Array();
+		window.couleurprogress=new Array();
+	window.couleurtitre=new Array();
+	window.couleurchapeau=new Array();
 	   
 	    //pour chaque div
           $.each($(".slide-parallax") , function (l){ 
@@ -35,6 +41,11 @@ function init_parallax(){
 			 titre[l]=$(this).children( '.titre' ).text();
 			 chapeau[l]=$(this).children( '.chapeau' ).text();
 			 bouton[l]=$(this).children( '.push' ).text();
+			  couleurbouton[l]=$(this).children( '.push' ).attr('bg');
+			  couleurbullet[l]=$(this).children( '.titre' ).attr('bg');
+			  couleurprogress[l]=$(this).children( '.chapeau' ).attr('bg');
+			   couleurtitre[l]=$(this).children( '.titre' ).attr('color');
+			  couleurchapeau[l]=$(this).children( '.chapeau' ).attr('color');
              //On supprime la div
               $(this).remove();
           });
@@ -111,7 +122,7 @@ function init_parallax(){
 	  	$('.progessbar').css('left','0');
 	  	$('.progessbar').css('width','0%');
 	  	$('.progessbar').css('height','100%');
-	  	$('.progessbar').css('background-color','#d44d2e');
+	  	$('.progessbar').css('background-color',couleurprogress[i]);
 
 	  	
 
@@ -175,8 +186,8 @@ function init_parallax(){
 	   //Au rollover
 		$('.left').mouseover(function() {
 			
-			$('.left-barre-haut').css('background-color','#d44d2e');
-			$('.left-barre-bas').css('background-color','#d44d2e');
+			$('.left-barre-haut').css('background-color',couleurbullet[i]);
+			$('.left-barre-bas').css('background-color',couleurbullet[i]);
 			$(this).css('cursor', 'pointer');
 		});
 			
@@ -240,7 +251,7 @@ function init_parallax(){
 				//si l'id de la bullet est egal à la slide actuelle
 				if( $(this).attr("id") !=i){
 					 $(this).animate({
-		         		backgroundColor: '#d44d2e'
+		         		backgroundColor:  couleurbullet[i]
 		        	},"800", function() { });
 					$(this).css('cursor', 'pointer');
 				}
@@ -251,7 +262,7 @@ function init_parallax(){
 			   //si l'id de la bullet est egal à la slide actuelle
 			   if( $(this).attr("id") ==i){
 				   
-					$(this).css('background-color','#d44d2e');
+					$(this).css('background-color', couleurbullet[i]);
 				}else{
 				//sinon
 					 $(this).animate({
@@ -326,8 +337,8 @@ function init_parallax(){
 	   
 		//Au rollover
 		$('.droite').mouseover(function() {
-			$('.droite-barre-haut').css('background-color','#d44d2e');
-			$('.droite-barre-bas').css('background-color','#d44d2e');
+			$('.droite-barre-haut').css('background-color', couleurbullet[i]);
+			$('.droite-barre-bas').css('background-color',couleurbullet[i]);
 			$(this).css('cursor', 'pointer');
 		});
 			
@@ -430,6 +441,9 @@ function init_parallax(){
 	   $('.02-slideInterne'+zindex).css('height',tailleHimg02);
 	   $('.03-slideInterne'+zindex).css('width',tailleWimg03);
 	   $('.03-slideInterne'+zindex).css('height',tailleHimg03);
+		$('.03-slideInterne'+zindex).css('bottom','0');
+		$('.01-slideInterne'+zindex).css('bottom','0');
+		$('.02-slideInterne'+zindex).css('bottom','0');
 	   //INIT -- on met l'image contenu à 100% partout et c'est la dive la contenant qu'on manipulera pour que ça passe sur wordpress
 	   $( '.01-slideInterne'+zindex+' img' ).css('width','100%');
 	   $( '.01-slideInterne'+zindex+' img' ).css('height','100%');
@@ -437,8 +451,8 @@ function init_parallax(){
 	   $( '.02-slideInterne'+zindex+' img' ).css('height','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('width','100%');
 	   $( '.03-slideInterne'+zindex+' img' ).css('height','100%');
-		
-		
+		$('.progessbar').css('background-color',couleurprogress[i]);
+			
 		//On ajoute le contenu texte
 		$('.slider-parallax').append("<div class='text-parallax"+zindex+"'></div>");
 		$('.text-parallax'+zindex).css('position','absolute');
@@ -451,9 +465,9 @@ function init_parallax(){
 	    $('.text-parallax'+zindex).css('-ms-transform','translate(-50%,-50%)');
 	    $('.text-parallax'+zindex).css('transform','translate(-50%,-50%)');
 		
-		$('.text-parallax'+zindex).append("<div class='titre-parallax'>"+titre[i]+"</div>");
-		$('.text-parallax'+zindex).append("<div class='chapeau-parallax'>"+chapeau[i]+"</div>");
-		$('.text-parallax'+zindex).append("<a href='#' class='bouton-parallax'>"+bouton[i]+"</a>");
+		$('.text-parallax'+zindex).append("<div class='titre-parallax'style='color:"+couleurtitre[i]+";'>"+titre[i]+"</div>");
+		$('.text-parallax'+zindex).append("<div class='chapeau-parallax'style='color:"+couleurchapeau[i]+";'>"+chapeau[i]+"</div>");
+		$('.text-parallax'+zindex).append("<a href='#' class='bouton-parallax' style='background-color:"+couleurbouton[i]+";'>"+bouton[i]+"</a>");
 		
 		
 		tweenBlur($('.text-parallax'+zindex), 15, 0);
@@ -483,7 +497,7 @@ function init_parallax(){
 	    });	
 	    //On fait bouger le premier plan
 	    layer.mousemove(function(e){
-	        var valueX=(e.pageX * -1 / 90); 
+	        var valueX=(e.pageX * -1 / 5); 
 	        object3.css({
 	            'transform':'translate3d('+valueX+'px,0,0) '
 	        });
@@ -550,7 +564,7 @@ function init_parallax(){
 		//on met a jour les bullets pour déterminer laquelle ne doit plus etre clickable
 		$.each($(".bullet") , function (k){
 			if( $(this).attr("id") ==i){
-				$(this).css('background-color','#d44d2e');
+				$(this).css('background-color', couleurbullet[i]);
 			}else{
 				$(this).css('background-color','#fff');
 			}
@@ -617,20 +631,22 @@ function init_parallax(){
 		//on applique le style à la div pour qu'elle soit centrée
 		$('.01-slideInterne'+zindex).css('position','absolute');
 		$('.01-slideInterne'+zindex).css('z-index','50');	
-		$('.03-slideInterne'+zindex).css('left','0');
-		$('.03-slideInterne'+zindex).css('top','0');
+		$('.01-slideInterne'+zindex).css('left','0');
+		$('.01-slideInterne'+zindex).css('bottom','0');
+		
 		
 		//on applique le style à la div pour qu'elle soit centrée
 		$('.02-slideInterne'+zindex).css('position','absolute');
 		$('.02-slideInterne'+zindex).css('z-index','51');	
-		$('.03-slideInterne'+zindex).css('left','0');
-		$('.03-slideInterne'+zindex).css('top','0');
+		$('.02-slideInterne'+zindex).css('left','0');
+		$('.02-slideInterne'+zindex).css('bottom','0');
 		
 		//on applique le style à la div pour qu'elle soit centrée
 		$('.03-slideInterne'+zindex).css('position','absolute');
 		$('.03-slideInterne'+zindex).css('z-index','52');	
 		$('.03-slideInterne'+zindex).css('left','0');
-		$('.03-slideInterne'+zindex).css('top','0');
+		$('.03-slideInterne'+zindex).css('bottom','0');
+	
 
 
    }
